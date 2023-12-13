@@ -1,0 +1,31 @@
+# 工作流名称
+name: learn-github-actions
+# 工作流运行时显示名称
+run-name: ${{ github.actor }} is learning GitHub Actions
+# 怎样触发工作流
+on: 
+ push:
+   branches: [ "main" ]
+ pull_request:
+   branches: [ "main" ]
+# 工作流程任务（通常含有一个或多个步骤）
+jobs:
+  # 工作任务名称
+  check-bats-version:
+    # 将作业配置为在最新版本的Ubuntu Linux运行程序上运行, 注意此处不是Docker Hub中的ubuntu:latest, 而是Github中自己的虚拟主机。
+    runs-on: ubuntu-latest
+    # 操作步骤
+    steps:
+      # 使用 actions 脚本，例如，用于在工作流程中检出代码仓库的操作，即它允许你从存储库中检出（拉取）代码
+      - uses: actions/checkout@v3
+      # 使用 actions 脚本，创建一个 node 运行环境并使用with参数指定了版本为 14
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      # 运行一段shell命令或者Shell脚本
+      - run: npm install -g bats
+      - run: bats -v
+      - run: |
+          #!/usr/bin/env bash
+          echo -e "Hello, Github Actions!\Author: WeiyiGeek\nBlog: https://blog.weiyigeek.top" 
+          whoami && uname -a && ip addr
